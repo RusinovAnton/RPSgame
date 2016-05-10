@@ -22,6 +22,10 @@ gulp.task('app', function(){
       .pipe(gulp.dest(config.app.dest));
 });
 
+gulp.task('watch', ['app'], function(){
+  return gulp.watch('./app/**/*.js', ['app']);
+});
+
 gulp.task('default', ['app'], function(){
 
 });
