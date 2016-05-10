@@ -1,5 +1,6 @@
 var removeClass = require('./utils/removeClass');
 var addClass = require('./utils/addClass');
+var lodash = require('lodash');
 
 var startButton = document.getElementById('startButton');
 var startGame = document.getElementById('startGame');
