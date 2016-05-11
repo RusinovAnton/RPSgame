@@ -1,4 +1,5 @@
 module.exports = {
+	cache: false,
 	entry: [
 		'./app/index.js'
 	],

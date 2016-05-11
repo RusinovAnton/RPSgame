@@ -1,8 +1,10 @@
 'use strict';
 
-const gulp = require("gulp"),
-    uglify = require("gulp-uglify"),
-    webpack = require("webpack-stream");
+const gulp = require("gulp");
+const uglify = require("gulp-uglify");
+const webpack = require("webpack-stream");
+const plumber = require('gulp-plumber');
+const sourcemaps = require('gulp-sourcemaps');
 
 const config = {
   app: {
@@ -15,13 +17,20 @@ const config = {
 };
 
 
-gulp.task('app', function(){
+gulp.task('app', function () {
   return gulp.src(config.app.src)
-      .pipe(webpack( require(config.webpack.config) ))
-      .pipe(uglify())
-      .pipe(gulp.dest(config.app.dest));
+    .pipe(sourcemaps.init())
+    .pipe(plumber())
+    .pipe(webpack(require(config.webpack.config)))
+    //.pipe(uglify())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(config.app.dest));
 });
 
-gulp.task('default', ['app'], function(){
+gulp.task('watch', ['app'], function () {
+  return gulp.watch('./app/**/*.js', ['app']);
+});
+
+gulp.task('default', ['app'], function () {
 
 });
