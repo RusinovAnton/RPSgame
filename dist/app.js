@@ -59,15 +59,13 @@
 
 	startGame.addEventListener('click', function () {
 	  var rounds = prompt('How many rounds?');
-	  window.newGame = new Game(rounds);
+	  window.newGame = new Game(parseInt(rounds));
 	});
 
 	choiceButtons.addEventListener('click', function (e) {
 	  var target = e.target;
 	  if (target.className.match(/btn-choice/)) {
-
 	    newGame.playRound(target.dataset.choice);
-
 	  }
 	});
 
@@ -89,6 +87,7 @@
 
 	  function GameState() {
 	    this.gameStarted = false;
+	    this.rounds = rounds || 3;
 	    this.result = '';
 	    this.userChoice = '';
 	    this.computerChoice = '';
@@ -98,23 +97,20 @@
 	    this.tieScore = 0;
 	  }
 
-	  this.rounds = rounds || 0;
-
 	  this.state = new GameState();
 
 	  this.startGame = function () {
 	    this.state.gameStarted = true;
-
 	    // Hide start button
 	    addClass(startButton, 'hide');
 	    // Show choice buttons
 	    removeClass(choiceButtons, 'hide');
 
+	    this.updateLog(this.state);
 	  };
 
 	  this.endGame = function () {
 	    this.gameStarted = false;
-
 	    // Show start button
 	    removeClass(startButton, 'hide');
 	    // Hide choice buttons
@@ -125,14 +121,25 @@
 	    this.state.userChoice = userChoice;
 	    this.state.computerChoice = this.getComputerChoice();
 	    this.state.result = this.compareChoices(this.state.userChoice, this.state.computerChoice);
+	    this.state.roundsPlayed++;
 
 	    if (this.state.result !== -1) {
-	      this.state.roundsPlayed++;
-	      if (this.state.result) this.state.userScore++;
-	      else this.state.computerScore++;
-	    } else this.state.tieScore++;
+	      if (this.state.result) {
+	        this.state.userScore++;
+	        this.state.result = 'User wins!';
+	      }
+	      else {
+	        this.state.computerScore++;
+	        this.state.result = 'Computah wins!';
+	      }
+	    } else {
+	      this.state.rounds++;
+	      this.state.tieScore++;
+	      this.state.result = 'Tie';
+	    }
 
 	    this.updateLog(this.state);
+
 	  };
 
 	  this.getComputerChoice = function () {
@@ -140,9 +147,9 @@
 	    if (computerChoice < 0.34) {
 	      return "rock";
 	    } else if (computerChoice <= 0.67) {
-	      computerChoice = "paper";
+	      return "paper";
 	    } else {
-	      computerChoice = "scissors";
+	      return "scissors";
 	    }
 	  };
 
@@ -178,9 +185,9 @@
 	    }
 	  };
 
-	  this.updateLog = function(state){
+	  this.updateLog = function (state) {
 	    this.logger = this.logger || new GameLogger();
-	    console.log(state);
+	    //console.log(state);
 	    this.logger.write(state);
 	  };
 
@@ -210,36 +217,90 @@
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	function GameLogger(node){
-	  this.logNode = node || document.getElementById('#log');
-	  console.log(node);
-	  this.write = function(state){
-	    this.logNode.innerHTML =
-	      `Rounds played: ${state.roundsPlayed}
-	      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	      User choice: ${state.userChoice}
-	      Computer choice: ${state.computerChoice}
-	      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	      Result: ${state.result}
-	      =====================================
-	      SCORE:
-	      User: ${state.userScore}
-	      Computer: ${state.computerScore}
-	      Tie: ${state.tieScore}
+	var nodeListEach = __webpack_require__(6);
 
-	      `;
+	function GameLogger(node) {
+	  var _this = this;
+	  this.logNode = node || document.getElementById('log');
+	  this.logNodes = {};
+	  this.write = function (state) {
+	    this.logNode.innerHTML = `
+	      <h4>Round ${state.roundsPlayed + 1}</h4>
+	      <p>Rounds to play: ${state.rounds - state.roundsPlayed}</p>
+	      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
+	      <h2>User choice: ${state.userChoice}<br></h2>
+	      <h2>Computer choice: ${state.computerChoice}<br></h2>
+	      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
+	      <h3>Result: ${state.result}<br></h3>
+	      =====================================<br>
+	      <table class="table table-stripped">
+	      <thead><th><td colspan="2">SCORE:</td></th></thead>
+	      <tr>
+	        <td>User:</td><td>${state.userScore}</td>
+	      </tr>
+	      <tr>
+	        <td>Computer: </td><td>${state.computerScore}</td>
+	      </tr>
+	      <tr>
+	        <td>Tie:</td><td>${state.tieScore}</td>
+	      </tr>
+	      </table>`;
 
 	    if (state.gameResult) this.logNode.innerHTML += `${state.gameResult}`;
 	  };
+	  this.writeRound = function (state) {
+	  };
+	  this.writeScore = function (state) {
 
-	  this.clear = function(){
+	  };
+	  this.writeResult = function (state) {
+	  };
+
+	  this.init = function () {
+	    var logNodes = ['round', 'game', 'score', 'result'];
+
+	    function setLognodes(arr) {
+	      arr.forEach(function (el) {
+	        _this.logNode.innerHTML += `'<div class="log--${el}"></div>'`;
+	      });
+	      getLognodes(logNodes, _this.logNode.children);
+	    }
+
+	    function getLognodes(arr, logNodeChildren) {
+	      arr.forEach(function (element) {
+	        nodeListEach(logNodeChildren, function (el) {
+	          if (el.className.indexOf(element) !== -1) {
+	            _this.logNodes[element + 'Node'] = el;
+	          }
+	        });
+	      })
+	    }
+
+	    setLognodes(logNodes);
+
+	    console.log(this.logNodes);
+
+	  };
+
+	  this.clear = function () {
 	    this.logNode.innerHTML = '';
-	  }
+	  };
+
+	  this.init();
 	}
 
 	module.exports = GameLogger;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = function(list, cb){
+	  [].forEach.call(list, cb);
+	};
+
 
 /***/ }
 /******/ ]);
