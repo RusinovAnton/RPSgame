@@ -1,17 +1,25 @@
 
 function GameState(gamesPlayed, rounds) {
   return {
-    gameStarted: false,
-    gamesPlayed: gamesPlayed || 0,
-    rounds: rounds || 3,
-    roundsPlayed: 0,
-    result: '',
-    userChoice: '',
-    computerChoice: '',
-    userScore: 0,
-    computerScore: 0,
-    tieScore: 0,
-    resultMessage: ''
+
+    gameStarted       : false,
+    gamesPlayed       : gamesPlayed || 0,
+
+    rounds            : rounds || 3,
+    roundsPlayed      : 0,
+
+    round: {
+      result          : '',
+      userChoice      : '',
+      computerChoice  : ''
+    },
+
+    score: {
+      user            : 0,
+      enemy           : 0,
+      tie             : 0
+    }
+
   }
 }
 
