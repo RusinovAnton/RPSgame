@@ -1,47 +1,34 @@
-var removeClass = require('./utils/removeClass');
-var addClass = require('./utils/addClass');
-
-var GameLogger = require('./GameLogger');
+var GameState = require('./GameState');
+var View = require('./View.js');
 
 /**
- * @param rounds - amount of rounds to play;
  * @constructor RPS game start;
  */
-function Game(rounds) {
+function Game() {
+  this.init();
+}
 
-  function GameState() {
-    this.gameStarted = false;
-    this.rounds = rounds || 3;
-    this.result = '';
-    this.userChoice = '';
-    this.computerChoice = '';
-    this.roundsPlayed = 0;
-    this.userScore = 0;
-    this.computerScore = 0;
-    this.tieScore = 0;
-  }
+Game.prototype.init = function () {
 
-  this.state = new GameState();
+  this.view = new View();
+  this.state = {};
 
-  this.startGame = function () {
-    this.state.gameStarted = true;
-    // Hide start button
-    addClass(startButton, 'hide');
-    // Show choice buttons
-    removeClass(choiceButtons, 'hide');
+};
 
-    this.updateLog(this.state);
-  };
+Game.prototype.startGame = function (rounds) {
 
-  this.endGame = function () {
-    this.gameStarted = false;
-    // Show start button
-    removeClass(startButton, 'hide');
-    // Hide choice buttons
-    addClass(choiceButtons, 'hide');
-  };
+  console.log('## Game initialization ##');
 
-  this.playRound = function (userChoice) {
+  this.state = new GameState(this.state.gamesPlayed, parseInt(rounds));
+  this.state.gameStarted = true;
+  this.view.update(this.state);
+
+};
+
+Game.prototype.playRound = function (userChoice) {
+  console.log(this.state);
+
+  if (this.state.rounds - this.state.roundsPlayed) {
     this.state.userChoice = userChoice;
     this.state.computerChoice = this.getComputerChoice();
     this.state.result = this.compareChoices(this.state.userChoice, this.state.computerChoice);
@@ -61,61 +48,66 @@ function Game(rounds) {
       this.state.tieScore++;
       this.state.result = 'Tie';
     }
+  } else {
+    this.endGame();
+  }
 
-    this.updateLog(this.state);
+  this.view.update(this.state);
 
-  };
+};
 
-  this.getComputerChoice = function () {
-    var computerChoice = Math.random();
-    if (computerChoice < 0.34) {
-      return "rock";
-    } else if (computerChoice <= 0.67) {
-      return "paper";
+Game.prototype.endGame = function () {
+  this.state.gameStarted = false;
+  this.state.gamesPlayed++;
+
+  this.view.update(this.state);
+};
+
+Game.prototype.getComputerChoice = function () {
+  var computerChoice = Math.random();
+  if (computerChoice < 0.34) {
+    return "rock";
+  } else if (computerChoice <= 0.67) {
+    return "paper";
+  } else {
+    return "scissors";
+  }
+};
+Game.prototype.compareChoices = function (userChoice, computerChoice) {
+  if (userChoice === computerChoice) {
+    return -1;
+  } else if (userChoice === "rock") {
+    if (computerChoice === "scissors") {
+      return true;
     } else {
-      return "scissors";
+      return false;
     }
-  };
-
-  /**
-   * Comparing choices of computer and user
-   * @param userChoice
-   * @param computerChoice
-   * @returns bool -  true=user wins; false=computer wins; -1=tie;
-   */
-  this.compareChoices = function (userChoice, computerChoice) {
-    if (userChoice === computerChoice) {
-      return -1;
-    } else if (userChoice === "rock") {
-      if (computerChoice === "scissors") {
-        return true;
-      } else {
-        return false;
-      }
-    } else if (userChoice === "paper") {
-      if (computerChoice === "rock") {
-        return true;
-      } else {
-        return false;
-      }
-    } else if (userChoice === "scissors") {
-      if (computerChoice === "paper") {
-        return true;
-      } else {
-        return false;
-      }
+  } else if (userChoice === "paper") {
+    if (computerChoice === "rock") {
+      return true;
     } else {
-      throw new Error('Unacceptable answer');
+      return false;
     }
-  };
-
-  this.updateLog = function (state) {
-    this.logger = this.logger || new GameLogger();
-    //console.log(state);
-    this.logger.write(state);
-  };
-
-  this.startGame();
-}
+  } else if (userChoice === "scissors") {
+    if (computerChoice === "paper") {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    throw new Error('Unacceptable answer');
+  }
+};
+Game.prototype.setResultMessage = function () {
+  var resultMessage;
+  if (this.state.userScore > this.state.computerScore) {
+    resultMessage = 'User wins!';
+  } else if (this.state.userScore < this.state.computerScore) {
+    resultMessage = 'Computer wins!';
+  } else {
+    resultMessage = 'Result is tie!';
+  }
+  this.state.resultMessage = resultMessage;
+};
 
 module.exports = Game;
