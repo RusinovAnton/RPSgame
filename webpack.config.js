@@ -1,5 +1,5 @@
 module.exports = {
-	cache: false,
+    devtool: 'source-map',
 	entry: [
 		'./app/index.js'
 	],

@@ -9,7 +9,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const config = {
   app: {
     src: './app/index.js',
-    dest: './dist'
+    dest: './dist/assets'
   },
   webpack: {
     config: './webpack.config.js'
@@ -19,11 +19,9 @@ const config = {
 
 gulp.task('app', function () {
   return gulp.src(config.app.src)
-    .pipe(sourcemaps.init())
     .pipe(plumber())
     .pipe(webpack(require(config.webpack.config)))
     //.pipe(uglify())
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.app.dest));
 });
 
