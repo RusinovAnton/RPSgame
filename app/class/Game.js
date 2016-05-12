@@ -1,5 +1,6 @@
+
 var GameState = require('./GameState');
-var View = require('./View.js');
+var View = require('./View');
 
 /**
  * @constructor RPS game start;

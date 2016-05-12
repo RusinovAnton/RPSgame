@@ -1,4 +1,4 @@
-var nodeListEach = require('./utils/nodeListEach');
+var nodeListEach = require('../utils/nodeListEach');
 var _forEach = require('lodash').forEach;
 
 function GameLogger(node) {

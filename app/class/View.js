@@ -1,5 +1,5 @@
-var addClass = require('./utils/addClass');
-var removeClass = require('./utils/removeClass');
+var addClass = require('../utils/addClass');
+var removeClass = require('../utils/removeClass');
 
 var GameLogger = require('./GameLogger');
 
