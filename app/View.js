@@ -8,6 +8,7 @@ function View() {
 }
 
 View.prototype.init = function () {
+  console.log('## View initialization ##');
   this.logger = this.logger || new GameLogger();
   this.viewInit = false;
 };

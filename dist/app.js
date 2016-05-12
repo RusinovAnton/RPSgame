@@ -93,7 +93,7 @@
 	}
 
 	Game.prototype.init = function () {
-
+	  console.log('## Game Initialization ##');
 	  this.view = new View();
 	  this.state = {};
 
@@ -101,7 +101,7 @@
 
 	Game.prototype.startGame = function (rounds) {
 
-	  console.log('## Game initialization ##');
+	  console.log('## Game start ##');
 
 	  this.state = new GameState(this.state.gamesPlayed, parseInt(rounds));
 	  this.state.gameStarted = true;
@@ -141,6 +141,8 @@
 	};
 
 	Game.prototype.endGame = function () {
+	  console.log('## Game end ##');
+
 	  this.state.gameStarted = false;
 	  this.state.gamesPlayed++;
 
@@ -182,17 +184,6 @@
 	    throw new Error('Unacceptable answer');
 	  }
 	};
-	Game.prototype.setResultMessage = function () {
-	  var resultMessage;
-	  if (this.state.userScore > this.state.computerScore) {
-	    resultMessage = 'User wins!';
-	  } else if (this.state.userScore < this.state.computerScore) {
-	    resultMessage = 'Computer wins!';
-	  } else {
-	    resultMessage = 'Result is tie!';
-	  }
-	  this.state.resultMessage = resultMessage;
-	};
 
 	module.exports = Game;
 
@@ -204,17 +195,25 @@
 	
 	function GameState(gamesPlayed, rounds) {
 	  return {
-	    gameStarted: false,
-	    gamesPlayed: gamesPlayed || 0,
-	    rounds: rounds || 3,
-	    roundsPlayed: 0,
-	    result: '',
-	    userChoice: '',
-	    computerChoice: '',
-	    userScore: 0,
-	    computerScore: 0,
-	    tieScore: 0,
-	    resultMessage: ''
+
+	    gameStarted       : false,
+	    gamesPlayed       : gamesPlayed || 0,
+
+	    rounds            : rounds || 3,
+	    roundsPlayed      : 0,
+
+	    round: {
+	      result          : '',
+	      userChoice      : '',
+	      computerChoice  : ''
+	    },
+
+	    score: {
+	      user            : 0,
+	      enemy           : 0,
+	      tie             : 0
+	    }
+
 	  }
 	}
 
@@ -234,6 +233,7 @@
 	}
 
 	View.prototype.init = function () {
+	  console.log('## View initialization ##');
 	  this.logger = this.logger || new GameLogger();
 	  this.viewInit = false;
 	};
