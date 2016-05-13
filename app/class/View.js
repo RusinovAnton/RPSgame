@@ -3,15 +3,15 @@ var removeClass = require('../utils/removeClass');
 var createElement = require('../utils/createElement');
 
 var GameLogger = require('./GameLogger');
+var ViewState = require('./ViewState');
 
 function View() {
-    this.viewInit = false;
     this.choiceButtons = this.game.choiceButtons || [];
     this.ui = this.app.ui || {};
 
     this.init = function () {
-
         console.log('## View initialization ##');
+        this.state = new ViewState();
         this.buildView();
         this.logger = new GameLogger(this.ui.logNode);
     };
@@ -76,7 +76,6 @@ function View() {
     };
 
     this.update = function () {
-
         console.log(this.app.state);
        /* if (state.gameStarted && !this.viewInit) {
             this.showPlayButtons(true);

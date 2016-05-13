@@ -1,5 +1,4 @@
 var GameState = require('./GameState');
-var View = require('./View');
 
 /**
  * @constructor RPS game start;
@@ -9,17 +8,16 @@ function Game() {
 
     this.init = function () {
         console.log('## Game Initialization ##');
-        this.state = this.app.state;
     };
 
     this.startGame = function (rounds) {
 
         console.log('## Game start ##');
 
-        this.state = new GameState(this.state.gamesPlayed, parseInt(rounds));
-        this.state.gameStarted = true;
+        this.app.state = new GameState(this.app.state.gamesPlayed, parseInt(rounds));
+        this.app.state.gameStarted = true;
 
-        this.view.update(this.state);
+        this.view.update();
 
     };
 
