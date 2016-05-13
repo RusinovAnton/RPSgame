@@ -4,16 +4,16 @@ var createElement = require('../utils/createElement');
 
 var GameLogger = require('./GameLogger');
 
-function View(viewNode, settings) {
+function View() {
     this.viewInit = false;
     this.choiceButtons = this.game.choiceButtons || [];
-    this.ui = this.ui || {};
+    this.ui = this.app.ui || {};
 
     this.init = function () {
 
         console.log('## View initialization ##');
-        //this.buildView();
-        //this.logger = new GameLogger(this.ui.logNode);
+        this.buildView();
+        this.logger = new GameLogger(this.ui.logNode);
     };
 
     this.buildView = function () {
@@ -35,7 +35,7 @@ function View(viewNode, settings) {
         panelGroup.appendChild(choiceButtonsWrapper);
         panelGroup.appendChild(log);
 
-        this.viewNode.appendChild(panelGroup);
+        this.appNode.appendChild(panelGroup);
 
         this.ui.appBody = panelGroup;
         this.ui.startGame = gameStartButton;
