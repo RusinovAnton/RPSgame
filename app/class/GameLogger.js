@@ -3,57 +3,58 @@ var _forEach = require('lodash').forEach;
 
 function GameLogger(node) {
 
-  var _this = this;
-  this.logNode = node || document.getElementById('log');
-  this.logNodes = {};
+    var _this = this;
+    this.logNode = node || document.getElementById('log');
+    this.logNodes = {};
 
-  this.init = function () {
-    console.log('## GameLogger initialization ##');
+    this.init = function () {
+        console.log('## GameLogger initialization ##');
 
-    this.clear();
-    var logNodes = ['round', 'game', 'score', 'result'];
+        this.clear();
+        var logNodes = ['round', 'game', 'score', 'result'];
 
-    function setLognodes(arr) {
-      arr.forEach(function (el) {
-        _this.logNode.innerHTML += `<div class="log--${el}"></div>`;
-      });
-      getLognodes(logNodes, _this.logNode.children);
-    }
+        function setLognodes(arr) {
+            arr.forEach(function (el) {
+                _this.logNode.innerHTML += `<div class="log--${el}"></div>`;
+            });
+            getLognodes(logNodes, _this.logNode.children);
+        }
 
-    function getLognodes(arr, logNodeChildren) {
-      arr.forEach(function (element) {
-        nodeListEach(logNodeChildren, function (el) {
-          if (el.className.indexOf(element) !== -1) {
-            _this.logNodes[element + 'Node'] = el;
-          }
-        });
-      })
-    }
-    setLognodes(logNodes);
-  };
+        function getLognodes(arr, logNodeChildren) {
+            arr.forEach(function (element) {
+                nodeListEach(logNodeChildren, function (el) {
+                    if (el.className.indexOf(element) !== -1) {
+                        _this.logNodes[element + 'Node'] = el;
+                    }
+                });
+            })
+        }
 
-  this.write = function(state){
+        setLognodes(logNodes);
+    };
 
-  };
+    this.write = function (state) {
 
-  this.writeRound = function (state) {
-    this.logNodes.roundNode.innerHTML =
-      `<h3>Game: ${state.gamesPlayed+1}</h3>
+    };
+
+    this.writeRound = function (state) {
+        this.logNodes.roundNode.innerHTML =
+            `<h3>Game: ${state.gamesPlayed + 1}</h3>
       <h4>Round ${state.roundsPlayed + 1}</h4>
       <p>Rounds to play: ${state.rounds - state.roundsPlayed}</p>`;
-  };
-  this.writeGame = function (state) {
-    this.logNodes.gameNode.innerHTML = `
+    };
+    this.writeGame = function (state) {
+        this.logNodes.gameNode.innerHTML = `
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
       <h2>User choice: ${state.userChoice}<br></h2>
       <h2>Computer choice: ${state.computerChoice}<br></h2>
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
       <h3>Result: ${state.result}<br></h3>
       =====================================<br>`;
-  };
-  this.writeScore = function (state) {
-    this.logNodes.scoreNode.innerHTML =
-        `<table class="table table-stripped">
+    };
+    this.writeScore = function (state) {
+        this.logNodes.scoreNode.innerHTML =
+            `<table class="table table-stripped">
           <thead><th><td colspan="2">SCORE:</td></th></thead>
           <tbody>
             <tr>
@@ -67,21 +68,21 @@ function GameLogger(node) {
             </tr>
           </tbody>
         </table>`;
-  };
-  this.writeResult = function (state) {
-    this.clear();
-    this.logNodes.resultNode.innerHTML = `
+    };
+    this.writeResult = function (state) {
+        this.clear();
+        this.logNodes.resultNode.innerHTML = `
       <h3>Game is over</h3>
       <h4>${state.resultMessage}</h4>
     `;
-  };
-  this.clear = function() {
-    _forEach(this.logNodes, function(el){
-      el.innerHTML = '';
-    })
-  };
+    };
+    this.clear = function () {
+        _forEach(this.logNodes, function (el) {
+            el.innerHTML = '';
+        })
+    };
 
-  this.init();
+    this.init();
 
 }
 
