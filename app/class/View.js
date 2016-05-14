@@ -65,24 +65,30 @@ function View() {
     };
 
     this.showPlayButtons = function (show) {
-        this.viewInit = show;
+        this.state.viewInit = show;
         if (show) {
             addClass(this.ui.startGameWrapper, 'hide');
             removeClass(this.ui.choiceButtonsWrapper, 'hide');
         } else {
             removeClass(this.ui.startGameWrapper, 'hide');
-            hideClass(this.ui.choiceButtonsWrapper, 'hide');
+            addClass(this.ui.choiceButtonsWrapper, 'hide');
         }
     };
 
     this.update = function () {
-        console.log(this.app.state);
-       /* if (state.gameStarted && !this.viewInit) {
-            this.showPlayButtons(true);
+        var appState = this.app.state;
+        var state = this.state;
 
-        } else if (!state.gameStarted && this.viewInit) {
-            this.showPlayButtons(false);
-        }*/
+        if (appState.gameStarted) {
+            if (!state.viewInit) this.showPlayButtons(true);
+            this.logger.writeRound(appState);
+            if (appState.roundsPlayed) {
+                this.logger.write(appState);
+            }
+        } else {
+            if (state.viewInit) this.showPlayButtons(false);
+        }
+
 
     };
 }

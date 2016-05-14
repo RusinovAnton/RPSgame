@@ -11,19 +11,20 @@ function App(appNode) {
 
 App.prototype.handlers = {
     startGameHandler: function (e) {
-        console.log(e);
+        this.game.startGame();
     },
     choiceButtonsHandler: function (e) {
-        console.log(e);
+        this.game.playRound(e.target.dataset.choice);
     }
 };
 
 App.prototype.initHandlers = function () {
 
-    this.app.ui.startGame.addEventListener('click', this.handlers.startGameHandler);
-    this.app.ui.choiceButtonsWrapper.addEventListener('click', this.handlers.choiceButtonsHandler);
+    this.app.ui.startGame.addEventListener('click', this.handlers.startGameHandler.bind(this));
+    this.app.ui.choiceButtonsWrapper.addEventListener('click', this.handlers.choiceButtonsHandler.bind(this));
 
 };
+
 
 App.prototype.init = function () {
 
@@ -31,8 +32,6 @@ App.prototype.init = function () {
 
     this.game.init();
     this.view.init();
-    this.game.startGame(0);
-    console.log(this.app);
     this.initHandlers();
 
 };

@@ -22,43 +22,39 @@ function Game() {
     };
 
     this.playRound = function (userChoice) {
-        console.log(this.state);
 
-        if (this.state.rounds - this.state.roundsPlayed) {
-            this.state.userChoice = userChoice;
-            this.state.computerChoice = this.getComputerChoice();
-            this.state.result = this.compareChoices(this.state.userChoice, this.state.computerChoice);
-            this.state.roundsPlayed++;
+        if (this.app.state.rounds - this.app.state.roundsPlayed) {
+            this.app.state.round.userChoice = userChoice;
+            this.app.state.round.computerChoice = this.getComputerChoice();
+            this.app.state.round.result = this.compareChoices(this.app.state.round.userChoice, this.app.state.round.computerChoice);
+            this.app.state.roundsPlayed++;
 
-            if (this.state.result !== -1) {
-                if (this.state.result) {
-                    this.state.userScore++;
-                    this.state.result = 'User wins!';
+            if (this.app.state.result !== -1) {
+                if (this.app.state.result) {
+                    this.app.state.score.user++;
                 }
                 else {
-                    this.state.computerScore++;
-                    this.state.result = 'Computah wins!';
+                    this.app.state.score.enemy++;
                 }
             } else {
-                this.state.rounds++;
-                this.state.tieScore++;
-                this.state.result = 'Tie';
+                this.app.state.rounds++;
+                this.app.state.score.tie++;
             }
         } else {
             this.endGame();
         }
 
-        this.view.update(this.state);
+        this.view.update();
 
     };
 
     this.endGame = function () {
         console.log('## Game end ##');
 
-        this.state.gameStarted = false;
-        this.state.gamesPlayed++;
+        this.app.state.gameStarted = false;
+        this.app.state.gamesPlayed++;
 
-        this.view.update(this.state);
+        this.view.update();
     };
 
     this.getComputerChoice = function () {

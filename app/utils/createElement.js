@@ -1,4 +1,4 @@
-var _forEach = require('lodash').forEach;
+var _forEach = require('lodash.foreach');
 
 module.exports = function (tag, attrs, inner) {
 

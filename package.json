@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.12.0"
+    "lodash.foreach": "^4.3.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

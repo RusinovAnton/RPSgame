@@ -1,5 +1,5 @@
 var nodeListEach = require('../utils/nodeListEach');
-var _forEach = require('lodash').forEach;
+var _forEach = require('lodash.foreach');
 
 function GameLogger(node) {
 
@@ -34,7 +34,10 @@ function GameLogger(node) {
     };
 
     this.write = function (state) {
-
+        this.state = state;
+        console.log(this);
+        this.writeGame();
+        this.writeScore();
     };
 
     this.writeRound = function (state) {
@@ -44,6 +47,7 @@ function GameLogger(node) {
       <p>Rounds to play: ${state.rounds - state.roundsPlayed}</p>`;
     };
     this.writeGame = function (state) {
+        state = state.round || this.state.round;
         this.logNodes.gameNode.innerHTML = `
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
       <h2>User choice: ${state.userChoice}<br></h2>
@@ -53,18 +57,19 @@ function GameLogger(node) {
       =====================================<br>`;
     };
     this.writeScore = function (state) {
+        state = state.score || this.state.score;
         this.logNodes.scoreNode.innerHTML =
             `<table class="table table-stripped">
           <thead><th><td colspan="2">SCORE:</td></th></thead>
           <tbody>
             <tr>
-              <td>User:</td><td>${state.userScore}</td>
+              <td>User:</td><td>${state.user}</td>
             </tr>
             <tr>
-              <td>Computer: </td><td>${state.computerScore}</td>
+              <td>Computer: </td><td>${state.enemy}</td>
             </tr>
             <tr>
-              <td>Tie:</td><td>${state.tieScore}</td>
+              <td>Tie:</td><td>${state.tie}</td>
             </tr>
           </tbody>
         </table>`;
