@@ -25,7 +25,6 @@ App.prototype.initHandlers = function () {
 
 };
 
-
 App.prototype.init = function () {
 
     console.log('## App init ##');

@@ -2,7 +2,7 @@
  *
  * @param { Number } gamesPlayed
  * @param { Number } rounds
- * @returns {{gameStarted: boolean, gamesPlayed: (*|number), rounds: (*|number), roundsPlayed: number, round: {result: string, userChoice: string, computerChoice: string}, score: {user: number, enemy: number, tie: number}}}
+ * @returns {{gameStarted: boolean, gamesPlayed: (*|number), rounds: (*|number), roundsPlayed: number, round: {result: string, userChoice: string, computerChoice: string}, score: {user: number, computer: number, tie: number}}}
  * @constructor - initial game state
  */
 
@@ -23,7 +23,7 @@ function GameState(gamesPlayed, rounds) {
 
     score: {
       user            : 0,
-      enemy           : 0,
+      computer           : 0,
       tie             : 0
     }
 

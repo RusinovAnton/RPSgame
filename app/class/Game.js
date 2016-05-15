@@ -1,7 +1,7 @@
 var GameState = require('./GameState');
 
 /**
- * @constructor RPS game start;
+ * @constructor RPS game;
  */
 function Game() {
     this.choiceButtons = ['rock', 'paper', 'scissors'];
@@ -34,7 +34,7 @@ function Game() {
                     this.app.state.score.user++;
                 }
                 else {
-                    this.app.state.score.enemy++;
+                    this.app.state.score.computer++;
                 }
             } else {
                 this.app.state.rounds++;

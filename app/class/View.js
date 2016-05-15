@@ -81,16 +81,11 @@ function View() {
 
         if (appState.gameStarted) {
             if (!state.viewInit) this.showPlayButtons(true);
-            this.logger.writeRound(appState);
-            if (appState.roundsPlayed) {
-                this.logger.write(appState);
-            }
         } else {
             if (state.viewInit) this.showPlayButtons(false);
-            this.logger.clear();
-            this.logger.write(appState);
         }
 
+        this.logger.write(appState);
 
     };
 }
