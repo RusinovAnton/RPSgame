@@ -29,8 +29,8 @@ function Game() {
             this.app.state.round.result = this.compareChoices(this.app.state.round.userChoice, this.app.state.round.computerChoice);
             this.app.state.roundsPlayed++;
 
-            if (this.app.state.result !== -1) {
-                if (this.app.state.result) {
+            if (this.app.state.round.result !== -1) {
+                if (this.app.state.round.result) {
                     this.app.state.score.user++;
                 }
                 else {

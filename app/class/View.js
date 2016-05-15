@@ -87,6 +87,8 @@ function View() {
             }
         } else {
             if (state.viewInit) this.showPlayButtons(false);
+            this.logger.clear();
+            this.logger.write(appState);
         }
 
 
