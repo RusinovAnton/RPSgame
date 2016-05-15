@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'Pixel Mix';
+    src: url('../fonts/pixelmix/pixelmix.ttf');
+    font-style: normal;
+    font-weight: 400;
+}
+
+body {
+    font-family: 'Pixel Mix', monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+}
+
+.btn {
+    border-radius: 0;
+    border-width: 3px;
+    box-shadow: 3px 3px 0 0 #0cf;
+}
+
+.btn:active {
+    box-shadow: inset 3px 3px 0 0 currentColor;
+}
+
+*:active,
+*:focus {
+    outline: 0;
+}
