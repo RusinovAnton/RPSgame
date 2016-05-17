@@ -31,11 +31,11 @@ function GameLogger(node) {
     };
 
     this.prettyResult = function (result) {
-
-        if (this.state.round.result === -1) {
+        result = typeof result === 'undefined' ? this.state.round.result : result;
+        if ( result === -1) {
             return 'Tie';
         } else {
-            if (this.state.round.result) {
+            if (result) {
                 return 'User win';
             } else {
                 return 'Computer win';
@@ -90,7 +90,7 @@ function GameLogger(node) {
         }
     };
 
-    this.init();
+    //this.init();
 
 }
 
