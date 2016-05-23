@@ -46,16 +46,12 @@ function View() {
     };
 
     this.setChoiceButtons = function () {
-        var choiceButton = createElement('button', {
-            className: 'btn btn-lg btn-warning',
-            style: 'text-transform:uppercase;margin:0 5px;'
-        });
-
-        var dataChoice = document.createAttribute('data-choice');
-
         return this.choiceButtons.map(function (el) {
-            var node = choiceButton.cloneNode();
-            var attr = dataChoice.cloneNode();
+            var node = createElement('button', {
+                className: 'btn btn-lg btn-warning',
+                style: 'text-transform:uppercase;margin:0 5px;'
+            });
+            var attr = document.createAttribute('data-choice');
             attr.value = el;
 
             node.setAttributeNode(attr);
@@ -78,13 +74,11 @@ function View() {
     this.update = function () {
         var appState = this.app.state;
         var state = this.state;
-
         if (appState.gameStarted) {
             if (!state.viewInit) this.showPlayButtons(true);
         } else {
             if (state.viewInit) this.showPlayButtons(false);
         }
-        console.log(state);
         this.logger.write(appState);
 
     };

@@ -4,6 +4,7 @@ var GameState = require('./GameState');
  * @constructor RPS game;
  */
 function Game() {
+
     this.choiceButtons = ['rock', 'paper', 'scissors'];
 
     this.init = function () {
