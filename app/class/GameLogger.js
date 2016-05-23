@@ -27,7 +27,7 @@ function GameLogger(node) {
     };
 
     this.write = function (state) {
-        console.log(state);
+        this.clear();
         if (state.gameStarted) {
             this.printGame({
                 game: state.game.gamesPlayed + 1,
@@ -47,17 +47,18 @@ function GameLogger(node) {
                     tie: state.round.score.tie
                 })
             }
-        } else if (!state.gameStarted && state.gamesPlayed) {
-            this.printGame({
-                game: gamesPlayed + 1,
-                gameOver: true
-            });
-            this.printScore({
-                title: 'Total score',
-                user: state.game.user,
-                computer: state.game.computer,
-                tie: state.game.tie
-            })
+        } else {
+            if (state.game.gamesPlayed) {
+                this.printGame({
+                    game: state.game.gamesPlayed,
+                    gameOver: true
+                });
+                this.printScore({
+                    title: 'Total score',
+                    user: state.game.score.user,
+                    computer: state.game.score.computer
+                })
+            }
         }
     };
 
@@ -113,6 +114,7 @@ function GameLogger(node) {
     };
 
     this.clear = function (node) {
+        console.log(typeof node);
         if (typeof node === 'undefined' || node === 'all') {
             _forEach(this.logNodes, function (el) {
                 el.innerHTML = '';
