@@ -108,7 +108,7 @@ function GameLogger(node) {
             <tbody>
                 <tr><td>User:</td><td>${state.user}</td></tr>
                 <tr><td>Computer:</td><td>${state.computer}</td></tr>
-                <tr><td>Tie:</td><td>${state.tie}</td></tr>
+                ${state.tie ? '<tr><td>Tie:</td><td>' + state.tie + '</td></tr>' : ''}
             </tbody>
         </table>`;
     };
