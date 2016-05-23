@@ -24,29 +24,33 @@ function Game() {
 
     this.playRound = function (userChoice) {
 
-        if (this.app.state.rounds - this.app.state.roundsPlayed >= 0) {
-            this.app.state.round.userChoice = userChoice;
-            this.app.state.round.computerChoice = this.getComputerChoice();
-            this.app.state.round.result = this.compareChoices(this.app.state.round.userChoice, this.app.state.round.computerChoice);
-            this.app.state.roundsPlayed++;
+        this.app.state.roundsPlayed++;
 
-            if (this.app.state.round.result !== -1) {
-                if (this.app.state.round.result) {
-                    this.setScore('user');
-                }
-                else {
-                    this.setScore('computer');
-                }
-            } else {
-                this.app.state.rounds++;
-                this.setScore('tie');
-            }
+        if (this.app.state.rounds - this.app.state.roundsPlayed > 0) {
+            this.proceed(userChoice);
         } else {
             this.endGame();
         }
 
-        this.view.update();
+    };
 
+    this.proceed = function(userChoice) {
+        this.app.state.round.userChoice = userChoice;
+        this.app.state.round.computerChoice = this.getComputerChoice();
+        this.app.state.round.result = this.compareChoices(this.app.state.round.userChoice, this.app.state.round.computerChoice);
+
+        if (this.app.state.round.result !== -1) {
+            if (this.app.state.round.result) {
+                this.setScore('user');
+            }
+            else {
+                this.setScore('computer');
+            }
+        } else {
+            this.app.state.rounds++;
+            this.setScore('tie');
+        }
+        this.view.update();
     };
 
     this.endGame = function () {
@@ -55,6 +59,7 @@ function Game() {
         this.app.state.gameStarted = false;
         this.app.state.game.gamesPlayed++;
 
+        this.view.update();
     };
 
     this.setScore = function(score){
