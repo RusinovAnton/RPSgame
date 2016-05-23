@@ -14,7 +14,7 @@ function Game() {
 
         console.log('## Game start ##');
 
-        this.app.state = new GameState(this.app.state.gamesPlayed, parseInt(rounds));
+        this.app.state = new GameState(this.app.state.game || this.app.state.game, parseInt(rounds));
         this.app.state.gameStarted = true;
 
         this.view.update();
@@ -23,7 +23,7 @@ function Game() {
 
     this.playRound = function (userChoice) {
 
-        if (this.app.state.rounds - this.app.state.roundsPlayed) {
+        if (this.app.state.rounds - this.app.state.roundsPlayed >= 0) {
             this.app.state.round.userChoice = userChoice;
             this.app.state.round.computerChoice = this.getComputerChoice();
             this.app.state.round.result = this.compareChoices(this.app.state.round.userChoice, this.app.state.round.computerChoice);
@@ -31,14 +31,14 @@ function Game() {
 
             if (this.app.state.round.result !== -1) {
                 if (this.app.state.round.result) {
-                    this.app.state.score.user++;
+                    this.setScore('user');
                 }
                 else {
-                    this.app.state.score.computer++;
+                    this.setScore('computer');
                 }
             } else {
                 this.app.state.rounds++;
-                this.app.state.score.tie++;
+                this.setScore('tie');
             }
         } else {
             this.endGame();
@@ -52,9 +52,13 @@ function Game() {
         console.log('## Game end ##');
 
         this.app.state.gameStarted = false;
-        this.app.state.gamesPlayed++;
+        this.app.state.game.gamesPlayed++;
 
-        this.view.update();
+    };
+
+    this.setScore = function(score){
+        this.app.state.round.score[score]++;
+        this.app.state.game.score[score]++;
     };
 
     this.getComputerChoice = function () {

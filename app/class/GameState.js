@@ -6,28 +6,33 @@
  * @constructor - initial game state
  */
 
-function GameState(gamesPlayed, rounds) {
-  return {
+function GameState(game, rounds) {
+    return {
 
-    gameStarted       : false,
-    gamesPlayed       : gamesPlayed || 0,
+        gameStarted: false,
+        rounds: rounds || 3,
+        roundsPlayed: 0,
+        game: game || {
+            gamesPlayed: 0,
+            result: '',
+            score: {
+                user: 0,
+                computer: 0,
+                tie: 0
+            }
+        },
+        round: {
+            result: '',
+            userChoice: '',
+            computerChoice: '',
+            score: {
+                user: 0,
+                computer: 0,
+                tie: 0
+            }
 
-    rounds            : rounds || 3,
-    roundsPlayed      : 0,
-
-    round: {
-      result          : '',
-      userChoice      : '',
-      computerChoice  : ''
-    },
-
-    score: {
-      user            : 0,
-      computer           : 0,
-      tie             : 0
+        }
     }
-
-  }
 }
 
 module.exports = GameState;

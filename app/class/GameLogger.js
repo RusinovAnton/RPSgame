@@ -27,15 +27,46 @@ function GameLogger(node) {
     };
 
     this.write = function (state) {
-
+        console.log(state);
+        if (state.gameStarted) {
+            this.printGame({
+                game: state.game.gamesPlayed + 1,
+                round: state.roundsPlayed + 1,
+                roundsToPlay: state.rounds - state.roundsPlayed
+            });
+            if (state.roundsPlayed) {
+                this.printRound({
+                    userChoice: state.round.userChoice,
+                    computerChoice: state.round.computerChoice,
+                    result: this.prettyResult(state.round.result)
+                });
+                this.printScore({
+                    title: 'Current game score',
+                    user: state.round.score.user,
+                    computer: state.round.score.computer,
+                    tie: state.round.score.tie
+                })
+            }
+        } else if (!state.gameStarted && state.gamesPlayed) {
+            this.printGame({
+                game: gamesPlayed + 1,
+                gameOver: true
+            });
+            this.printScore({
+                title: 'Total score',
+                user: state.game.user,
+                computer: state.game.computer,
+                tie: state.game.tie
+            })
+        }
     };
 
     this.prettyResult = function (result) {
 
-        if (this.state.round.result === -1) {
+        if (result === -1) {
             return 'Tie';
         } else {
-            if (this.state.round.result) {
+            if (result) {
                 return 'User win';
             } else {
                 return 'Computer win';
@@ -44,34 +75,41 @@ function GameLogger(node) {
 
     };
 
-    this.printGame = function (content) {
+    this.printGame = function (state) {
         var gameNode = this.logNodes.game;
-
-        if (content.game)           gameNode.innerHTML += `<h3>Game: ${content.game}</h3>`;
-        if (content.round)          gameNode.innerHTML += `<h4>Round ${content.round}</h4>`;
-        if (content.roundsToPlay)   gameNode.innerHTML += `<p>Rounds to play: ${content.roundsToPlay}</p>`;
-        if (content.roundsPlayed)   gameNode.innerHTML += `<p>Rounds played: ${content.roundsPlayed}</p>`;
-
+        this.clear('game');
+        if (state.game)           gameNode.innerHTML += `<h3>Game: ${state.game}</h3>`;
+        if (!state.gameOver) {
+            if (state.round)          gameNode.innerHTML += `<h4>Round ${state.round}</h4>`;
+            if (state.roundsToPlay)   gameNode.innerHTML += `<p>Rounds to play: ${state.roundsToPlay}</p>`;
+            if (state.roundsPlayed)   gameNode.innerHTML += `<p>Rounds played: ${state.roundsPlayed}</p>`;
+        } else {
+            gameNode.innerHTML += `<h3>is over</h3>`;
+        }
     };
 
-    this.printRound = function (content) {
-        this.logNodes.round.innerHTML = `~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
-                           <h2>User choice: ${content.userChoice}</h2><br>
-                           <h2>Computer choice: ${content.computerChoice}</h2><br>
-                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
-                           <h3>Result: ${content.result}</h3><br>`;
+    this.printRound = function (state) {
+        this.logNodes.round.innerHTML =
+            `~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br><br>
+            <h3>User choice:</h3><br><h2 style="color: #fc0000">${state.userChoice}</h2><br>
+            <h3>Computer choice: </h3><br><h2 style="color: #fc0000">${state.computerChoice}</h2><br>
+            <h3>Result: ${state.result}</h3><br>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>`;
     };
 
-    this.printScore = function (content) {
+    this.printScore = function (state) {
         var scoreNode = this.logNodes.score;
+        this.clear('score');
 
-        scoreNode.innerHTML = `<table class="table table-score"><thead><tr><td colspan="2">${content.title}</td></tr></thead><tbody>`;
-
-        if (content.user) scoreNode.innerHTML += `<tr><td>User:</td><td>${state.user}</td></tr>`;
-        if (content.computer) scoreNode.innerHTML += `<tr><td>Computer:</td><td>${state.computer}</td></tr>`;
-        if (content.tie) scoreNode.innerHTML += `<tr><td>Tie:</td><td>${state.tie}</td></tr>`;
-
-        scoreNode.innerHTML += `</tbody></table>`;
+        scoreNode.innerHTML = `
+        <table class="table table-score">
+            <thead><tr><td colspan="2">${state.title}</td></tr></thead>
+            <tbody>
+                <tr><td>User:</td><td>${state.user}</td></tr>
+                <tr><td>Computer:</td><td>${state.computer}</td></tr>
+                <tr><td>Tie:</td><td>${state.tie}</td></tr>
+            </tbody>
+        </table>`;
     };
 
     this.clear = function (node) {
@@ -82,10 +120,10 @@ function GameLogger(node) {
         } else if (typeof node === 'string' && this.logNodes[node]) {
             this.logNodes[node].innerHTML = '';
         } else if (Array.isArray(node)) {
-            node.forEach(function(el){
-               if (this.logNodes[el]) {
-                   this.logNodes[el].innerHTML = '';
-               }
+            node.forEach(function (el) {
+                if (this.logNodes[el]) {
+                    this.logNodes[el].innerHTML = '';
+                }
             }.bind(this));
         }
     };

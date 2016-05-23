@@ -84,7 +84,7 @@ function View() {
         } else {
             if (state.viewInit) this.showPlayButtons(false);
         }
-
+        console.log(state);
         this.logger.write(appState);
 
     };
